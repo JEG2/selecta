@@ -2,7 +2,7 @@ require_relative "spec_helper"
 
 describe "score" do
   def score(choice, query)
-    Score.score(choice, query)
+    Scorer.new(query).score(choice)
   end
 
   describe "basic matching" do

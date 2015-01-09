@@ -2,35 +2,38 @@ require_relative "spec/spec_helper"
 
 ready "scoring" do
   go "non-matching" do
-    Score.score("x" * 16, "y" * 16)
+    Scorer.new("y" * 16).score("x" * 16)
   end
 
   go "matching exactly" do
-    Score.score("x" * 16, "x" * 16)
+    Scorer.new("x" * 16).score("x" * 16)
   end
 
   go "matching broken up" do
-    Score.score("xy" * 20, "x" * 10)
+    Scorer.new("x" * 10).score("xy" * 20)
   end
 
   go "overlapping matches" do
-    Score.score("x" * 40, "x" * 10)
+    Scorer.new("x" * 10).score("x" * 40)
   end
 
   go "almost overlapping matches" do
-    Score.score(("x" * 9 + "y") * 4, "x" * 10)
+    Scorer.new("x" * 10).score(("x" * 9 + "y") * 4)
   end
 
   go "paths, non-matching" do
-    PATHS.each { |choice| Score.score(choice, "x" * 16) }
+    scorer = Scorer.new("x" * 16)
+    PATHS.each { |choice| scorer.score(choice) }
   end
 
   go "paths, empty query" do
-    PATHS.each { |choice| Score.score(choice, "") }
+    scorer = Scorer.new("")
+    PATHS.each { |choice| scorer.score(choice) }
   end
 
   go "paths, trivial query" do
-    PATHS.each { |choice| Score.score(choice, "a") }
+    scorer = Scorer.new("a")
+    PATHS.each { |choice| scorer.score(choice) }
   end
 end
 
